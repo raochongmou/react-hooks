@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, useRef } from "react";
+import React, { memo, useCallback, useState } from "react";
 
 const Home = memo(props => {
   const { increament } = props;
@@ -13,12 +13,15 @@ const Home = memo(props => {
 const App = () => {
   const [counter, setCounter] = useState(0);
   const [message, setMessage] = useState(0);
-  // useRef特点：值不变
-  const countRef = useRef();
-  countRef.current = counter;
-  const increament = useCallback(() => {
-    setCounter(countRef.current + 1);
-  }, []);
+  // const increament = useCallback(
+  //   () => {
+  //     setCounter(counter + 1);
+  //   },
+  //   [counter]
+  // );
+  const increament = () => {
+    setCounter(counter + 1);
+  };
   return (
     <div>
       <h2>
