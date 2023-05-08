@@ -1,35 +1,26 @@
-import React, { memo, useCallback, useState, useRef } from "react";
+import React, { memo, useMemo, useRef, useState } from "react";
 
-const Home = memo(props => {
-  const { increament } = props;
-  console.log("Home");
-  return (
-    <div>
-      <button onClick={increament}>home + 1</button>
-    </div>
-  );
-});
-
+let obj = {};
 const App = () => {
+  const getDom = () => {
+    console.log("dom", ref.current);
+    inputRef.current.focus();
+  };
   const [counter, setCounter] = useState(0);
-  const [message, setMessage] = useState(0);
-  // useRef特点：值不变
-  const countRef = useRef();
-  countRef.current = counter;
-  const increament = useCallback(() => {
-    setCounter(countRef.current + 1);
-  }, []);
+  const ref = useRef();
+  const inputRef = useRef();
+  const a = {};
+  console.log(obj === a);
+  obj = a;
   return (
     <div>
-      <h2>
-        计数器：{counter}
+      <h2 ref={ref}>
+        dom---{counter}
       </h2>
-      <button onClick={increament}>+1</button>
-      <h1>
-        {message}
-      </h1>
-      <button onClick={e => setMessage(Math.random() * 1000)}>改变message</button>
-      <Home increament={increament} />
+      <input ref={inputRef} />
+      <button onClick={getDom}>获取dom</button>
+      <button onClick={() => setCounter(counter + 1)}>+1</button>
+      {/* <Home res={res} info={info} /> */}
     </div>
   );
 };
