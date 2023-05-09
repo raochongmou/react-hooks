@@ -1,26 +1,31 @@
-import React, { memo, useMemo, useRef, useState } from "react";
+import React, { memo, useRef, forwardRef, useImperativeHandle } from "react";
 
-let obj = {};
+const Home = memo(
+  forwardRef((props, ref) => {
+    const homeRef = useRef();
+    useImperativeHandle(ref, () => ({
+      focus1: () => {
+        console.log("home focus");
+        homeRef.current.focus();
+      }
+    }));
+    return (
+      <div>
+        <input ref={homeRef} />
+      </div>
+    );
+  })
+);
+
 const App = () => {
   const getDom = () => {
-    console.log("dom", ref.current);
-    inputRef.current.focus();
+    inputRef.current.focus1();
   };
-  const [counter, setCounter] = useState(0);
-  const ref = useRef();
   const inputRef = useRef();
-  const a = {};
-  console.log(obj === a);
-  obj = a;
   return (
     <div>
-      <h2 ref={ref}>
-        dom---{counter}
-      </h2>
-      <input ref={inputRef} />
       <button onClick={getDom}>获取dom</button>
-      <button onClick={() => setCounter(counter + 1)}>+1</button>
-      {/* <Home res={res} info={info} /> */}
+      <Home ref={inputRef} />
     </div>
   );
 };
