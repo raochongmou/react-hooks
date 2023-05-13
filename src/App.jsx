@@ -1,31 +1,34 @@
-import React, { memo, useRef, forwardRef, useImperativeHandle } from "react";
-
-const Home = memo(
-  forwardRef((props, ref) => {
-    const homeRef = useRef();
-    useImperativeHandle(ref, () => ({
-      focus1: () => {
-        console.log("home focus");
-        homeRef.current.focus();
-      }
-    }));
-    return (
-      <div>
-        <input ref={homeRef} />
-      </div>
-    );
-  })
-);
+import React, { memo, useEffect, useState } from "react";
+import { useStorage } from "./hooks/useStorage";
 
 const App = () => {
-  const getDom = () => {
-    inputRef.current.focus1();
-  };
-  const inputRef = useRef();
+  // const [token, setToken] = useState(localStorage.getItem("token"));
+  // useEffect(
+  //   () => {
+  //     localStorage.setItem("token", token);
+  //   },
+  //   [token]
+  // );
+  // const [avator, setAvator] = useState(localStorage.getItem("avator"));
+  // useEffect(
+  //   () => {
+  //     localStorage.setItem("avator", avator);
+  //   },
+  //   [avator]
+  // );
+  const [token, setToken] = useStorage("token");
+  const [avator, setAvator] = useStorage("avator");
+
   return (
     <div>
-      <button onClick={getDom}>获取dom</button>
-      <Home ref={inputRef} />
+      <h2>
+        token: {token}
+      </h2>
+      <h2>
+        avator: {avator}
+      </h2>
+      <button onClick={() => setToken("rao")}>设置token</button>
+      <button onClick={() => setAvator("wwww.baidu.png")}>设置头像</button>
     </div>
   );
 };
