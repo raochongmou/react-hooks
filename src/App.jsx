@@ -1,36 +1,47 @@
-import React, { memo, useEffect, useState } from "react";
-import { useStorage } from "./hooks/useStorage";
+import React, { Fragment, memo } from "react";
+import { addCounterAction, changeMessageAction } from "./feature/counter";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
-const App = () => {
-  // const [token, setToken] = useState(localStorage.getItem("token"));
-  // useEffect(
-  //   () => {
-  //     localStorage.setItem("token", token);
-  //   },
-  //   [token]
-  // );
-  // const [avator, setAvator] = useState(localStorage.getItem("avator"));
-  // useEffect(
-  //   () => {
-  //     localStorage.setItem("avator", avator);
-  //   },
-  //   [avator]
-  // );
-  const [token, setToken] = useStorage("token");
-  const [avator, setAvator] = useStorage("avator");
+const Home = memo(() => {
+  // 这里如果要处理性能优化  需要传入第二个参数 shallowEqual 进行浅层比较
+  const { message } = useSelector(
+    state => ({
+      message: state.counter.message
+    }),
+    shallowEqual
+  );
+  const dispatch = useDispatch();
+  console.log("Home Render");
+  return (
+    <Fragment>
+      <h2>
+        {message}
+      </h2>
+      <button onClick={() => dispatch(changeMessageAction("hello React!"))}>
+        改变文本
+      </button>
+    </Fragment>
+  );
+});
 
+const App = memo(() => {
+  const { counter } = useSelector(
+    state => ({
+      counter: state.counter.featureCounter
+    }),
+    shallowEqual
+  );
+  const dispatch = useDispatch();
+  console.log("App Render");
   return (
     <div>
       <h2>
-        token: {token}
+        当前计数: {counter}
       </h2>
-      <h2>
-        avator: {avator}
-      </h2>
-      <button onClick={() => setToken("rao")}>设置token</button>
-      <button onClick={() => setAvator("wwww.baidu.png")}>设置头像</button>
+      <button onClick={() => dispatch(addCounterAction(1))}>+1</button>
+      <Home />
     </div>
   );
-};
+});
 
-export default memo(App);
+export default App;
